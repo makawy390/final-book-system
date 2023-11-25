@@ -45,7 +45,14 @@ const get_single_book = asyncWrapper(
 /* ====================== Update Book By Id ================================= */
 const update_book = asyncWrapper(
     async (req ,res , next) =>{
-            const update = await Books.findByIdAndUpdate({_id : req.params.id} , {$set: {...req.body}});
+        const {title , description , price , link} = req.body;
+            const update = await Books.findByIdAndUpdate({_id : req.params.id} , {$set: {
+                 title,
+                description,
+                price,
+                link,
+                image : req.file.filename
+            }});
             if (!update) {
            const error = appError.create(httpStatus.MESSAGE , 404 , httpStatus.FAIL );
            return next(error);
